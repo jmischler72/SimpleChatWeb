@@ -1,6 +1,7 @@
 <script lang="ts">
 import {app} from '@/firebase/init';
 import {getDatabase, set, ref, onChildAdded, push, query, limitToLast} from "firebase/database";
+import type {Message} from "@/components/message";
 
 const db = getDatabase(app);
 const messagesRef = ref(db, 'messages/');
@@ -14,7 +15,7 @@ export default {
   data() {
     return {
       message: '',
-      messages: []
+      messages: [] as Message[]
     }
   },
   methods: {
@@ -30,15 +31,15 @@ export default {
     },
     async updateScroll() {
       await this.$nextTick();
-      var element = document.getElementById("container");
-      element.scrollTop = element.scrollHeight;
+      const element: HTMLElement | null = document.getElementById("container");
+      if (element) element.scrollTop = element.scrollHeight;
       console.log("f");
     }
   },
   mounted() {
     this.updateScroll()
     onChildAdded(queryMessages, (data) => {
-      this.messages.push(data.val());
+      this.messages.push(data.val() as Message);
       this.updateScroll();
     });
   }
@@ -53,7 +54,7 @@ export default {
   <div class="chat-area">
     <div class="chat-list" id="container">
       <ul>
-        <li v-for="item in messages" :class="{ me: item.username === username }" :key="item">
+        <li v-for="item in messages" :class="{ me: item.username === username }" >
           <div class="name">
             <span class="">{{ item.username }}</span>
           </div>
