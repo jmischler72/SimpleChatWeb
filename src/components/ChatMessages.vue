@@ -159,7 +159,6 @@ export default {
   background: #e4eaee;
 }
 
-
 .name {
   padding: 14px;
   text-align: right;

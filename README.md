@@ -1,5 +1,15 @@
 # SimpleChatWeb
 
+## What is it ?
+This application is a simple messaging app using Vue Js and Firebase Realtime database
+. 
+
+The two main functionality are : 
+- Choosing a name that will be saved in Local Storage
+- Send messages to the database so everyone on the chat room can see them
+
+---
+# Vue Readme
 This template should help get you started developing with Vue 3 in Vite.
 
 ## Recommended IDE Setup
