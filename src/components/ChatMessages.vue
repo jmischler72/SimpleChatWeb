@@ -12,10 +12,12 @@ export default {
   props: {
     username: String
   },
+
   data() {
     return {
       message: '',
-      messages: [] as Message[]
+      messages: [] as Message[],
+      dropdown: false,
     }
   },
   methods: {
@@ -28,6 +30,9 @@ export default {
         timestamp: Date.now(),
       });
       this.message = "";
+    },
+    disconnectUser() {
+      this.$emit("disconnect");
     },
     async updateScroll() {
       await this.$nextTick();
@@ -51,10 +56,12 @@ export default {
 <template>
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"/>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"/>
   <div class="chat-area">
     <div class="chat-list" id="container">
       <ul>
-        <li v-for="item in messages" :class="{ me: item.username === username }" >
+        <li v-for="item in messages" :class="{ me: item.username === username }">
           <div class="name">
             <span class="">{{ item.username }}</span>
           </div>
@@ -62,16 +69,19 @@ export default {
             <p>{{
                 item.message.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
               }}</p>
-            <span class="msg-time">{{ item.timestamp ? new Date(item.timestamp).toLocaleString() : '' }}</span>
+            <span class="msg-time">{{ item.timestamp ? new Date(item.timestamp).toLocaleString('fr-FR') : '' }}</span>
           </div>
         </li>
 
       </ul>
     </div>
     <div class="input-container">
-      <div class="name">
-        <label for="name">{{ username }}</label>
-
+      <div v-if="dropdown" class="dropdown">
+        <button @click="disconnectUser">Deco</button>
+      </div>
+      <div class="name" @click="dropdown = !dropdown">
+        <span class="material-symbols-outlined">expand_more</span>
+        <span>{{ username }}</span>
       </div>
       <div class="message">
         <input v-on:keyup.enter="sendMessage" type="text" id="name" name="name" v-model="message"/>
@@ -92,32 +102,60 @@ export default {
 .chat-area {
   display: flex;
   flex-direction: column;
-  border: 1px solid #cfdae1;
-  box-shadow: inset 0 1px 3px rgba(207, 218, 225, 0.42);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 0 5px var(--dark-color);
   margin: 0 100px;
+  background-color: var(--chat-background-color);
+  border-radius: 20px;
+  overflow: hidden;
+
+}
+
+.dropdown {
+  background-color: white;
+  position: absolute;
+  display: block;
+}
+
+@media (max-width: 800px) {
+  .chat-area {
+    margin: 0;
+  }
+
+  .name {
+    min-width: 80px;
+  }
 }
 
 .input-container {
-  background: #cfdbe3;
+  background-color: var(--input-background-color);
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
 
 .input-container input {
   padding: 15px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-border);
   border-radius: 3px;
   margin: 10px;
   width: 100%;
   font-size: 15px;
+  background-color: var(--light-color);
 }
 
 .input-container .name {
   color: #465563;
   text-align: center;
   width: 150px;
+  cursor: pointer;
+  align-items: center;
+  display: flex;
+  justify-content: space-around;
 }
 
 .input-container .message {
-  border-left: 2px solid #adbdc7;
+  background-color: var(--input-background-color);
+  border-left: 2px solid var(--color-border);
   padding: 0 !important;
   padding-right: 20px !important;
 }
@@ -149,15 +187,20 @@ export default {
 .chat-area ul > li, .input-container {
   display: flex;
   align-items: center;
-  border-top: 1px solid #cfdae1;
+  border-top: 1px solid var(--color-border);
   overflow: hidden;
   position: relative;
   margin: 0;
 }
 
-.chat-area ul > li.me {
-  background: #e4eaee;
+.chat-area ul > li:last-child {
+  border-bottom: 1px solid var(--color-border);
 }
+
+.chat-area ul > li.me {
+  background: var(--me-background-color);
+}
+
 
 .name {
   padding: 14px;
@@ -176,7 +219,7 @@ export default {
   display: flex;
   flex-direction: row;
   padding: 0 50px;
-  border-left: 1px solid #cfdae1;
+  border-left: 1px solid var(--color-border);
   float: left;
   color: #333f4d;
   width: 100%;

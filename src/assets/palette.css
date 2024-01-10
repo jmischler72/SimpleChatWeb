@@ -1,0 +1,21 @@
+:root{
+    --dark-color: #787878;
+    --medium-color2: #e0eaff;
+    --light-color: #ededed;
+    --light-color2: #c3d4fa;
+    --accent-color1:#d2dffc;
+    --accent-color2:#7ba49d;
+}
+
+:root{
+    --color-border: var(--dark-color);
+    --background-color: var(--medium-color2);
+    --me-background-color: var(--accent-color1);
+    --message-background-color: var(--light-color);
+    --input-background-color: var(--light-color2);
+    --chat-background-color:var(--light-color);
+}
+
+body {
+    background-color: var(--background-color);
+}
