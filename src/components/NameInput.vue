@@ -7,6 +7,8 @@ export default {
   },
   methods: {
     handleChange() {
+      localStorage.setItem('username', this.name);
+
       this.$emit("name-changed", this.name)
     }
   },

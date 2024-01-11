@@ -3,6 +3,7 @@
 import ToggleDarkMode from "@/components/ToggleDarkMode.vue";
 import TextEditor from "@/components/TextEditor.vue";
 import ChatList from "@/components/ChatList.vue";
+import GifPicker from "@/components/GifPicker.vue";
 
 export default {
   data() {
@@ -11,6 +12,7 @@ export default {
     };
   },
   components: {
+    GifPicker,
     ChatList,
     TextEditor,
     ToggleDarkMode,
@@ -29,27 +31,26 @@ export default {
 </script>
 
 <template>
-  <div class="bg-[--medium-color2] dark:bg-[--dark-color2]">
-    <ToggleDarkMode class="toggle"></ToggleDarkMode>
-    <div class="chat">
-      <ChatList></ChatList>
-      <TextEditor></TextEditor>
+  <div class="w-full h-full bg-[--medium-color2] dark:bg-[--dark-color2]">
+    <div class="flex flex-row absolute right-3 my-6 justify-end gap-2 items-center">
+      <ToggleDarkMode></ToggleDarkMode>
+    </div>
+    <div class="w-full h-full justify-center chat">
+      <ChatList :username="username"></ChatList>
+      <TextEditor :username="username"></TextEditor>
     </div>
   </div>
+
+<!--  <GifPicker api-key="AIzaSyCVZmVXOO1pCLBjRnjMu3wK_HhFtw6BNwI"></GifPicker>-->
+
 </template>
 
 <style scoped>
-.toggle {
-  margin: 20px;
-  right: -10px;
-  position: absolute;
-}
-
 .chat {
   display: flex;
-  justify-content: center;
   flex-direction: column;
   align-items: center;
+  margin: auto;
   gap: 15px;
 }
 </style>
