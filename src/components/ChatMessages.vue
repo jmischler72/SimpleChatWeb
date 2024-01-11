@@ -1,12 +1,11 @@
 <script lang="ts">
 import {app} from '@/firebase/init';
-import {getDatabase, set, ref, onChildAdded, push, query, limitToLast} from "firebase/database";
+import {getDatabase, set, ref, onChildAdded, push, query, limitToLast, serverTimestamp} from "firebase/database";
 import type {Message} from "@/components/message";
 
 const db = getDatabase(app);
 const messagesRef = ref(db, 'messages/');
 const queryMessages = query(messagesRef, limitToLast(5));
-
 
 export default {
   props: {
@@ -27,7 +26,7 @@ export default {
       set(newMessageRef, {
         username: this.username,
         message: this.message,
-        timestamp: Date.now(),
+        timestamp: serverTimestamp(),
       });
       this.message = "";
     },
@@ -97,12 +96,14 @@ export default {
 
 </template>
 
-<style scoped>
+<style lang="scss">
 
 @import url('https://fonts.googleapis.com/css2?family=Chathura:wght@700;800&display=swap');
+:root{
+  --border-radius-px:20px;
+}
 
 .chat{
-
   width: 100vw;
   height: 100vh;
 }
@@ -113,10 +114,9 @@ export default {
   left: 50%;
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--color-border);
-  box-shadow: 0 0 5px var(--dark-color);
+  box-shadow: 0 0 8px var(--dark-color);
   background-color: var(--chat-background-color);
-  border-radius: 20px;
+  border-radius: var(--border-radius-px);
   overflow: hidden;
   font-size: 2em;
   justify-content: center;
@@ -142,17 +142,17 @@ export default {
 
 .input-container {
   background-color: var(--input-background-color);
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
 }
 
 .input-container input {
-  padding: 15px;
+  padding: 0px 15px;
   border: 1px solid var(--color-border);
   border-radius: 3px;
   margin: 10px;
   width: 100%;
-  font-size: 15px;
+  font-size: 1em;
   background-color: var(--light-color);
 }
 
