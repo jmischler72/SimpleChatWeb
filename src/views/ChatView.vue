@@ -18,7 +18,7 @@ export default {
       this.username = value;
       localStorage.setItem('username', value);
     },
-    disconnectUser(){
+    disconnectUser() {
       localStorage.removeItem('username');
       this.username = null;
     }
@@ -28,14 +28,13 @@ export default {
 
 <template>
 
-  <h1 v-if="!username">
+  <div v-if="!username">
     <NameInput @name-changed="handleUsernameChange"></NameInput>
-  </h1>
-  <h1 v-else>
+  </div>
+  <div  v-else>
     <ChatMessages :username="username" @disconnect="disconnectUser"></ChatMessages>
-  </h1>
+  </div>
 </template>
 
 <style scoped>
-
 </style>

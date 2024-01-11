@@ -58,37 +58,39 @@ export default {
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"/>
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"/>
-  <div class="chat-area">
-    <div class="chat-list" id="container">
-      <ul>
-        <li v-for="item in messages" :class="{ me: item.username === username }">
-          <div class="name">
-            <span class="">{{ item.username }}</span>
-          </div>
-          <div class="message">
-            <p>{{
-                item.message.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-              }}</p>
-            <span class="msg-time">{{ item.timestamp ? new Date(item.timestamp).toLocaleString('fr-FR') : '' }}</span>
-          </div>
-        </li>
+  <div class="chat">
+    <div class="chat-area">
+      <div class="chat-list" id="container">
+        <ul>
+          <li v-for="item in messages" :class="{ me: item.username === username }">
+            <div class="name">
+              <span class="">{{ item.username }}</span>
+            </div>
+            <div class="message">
+              <p>{{
+                  item.message.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                }}</p>
+              <span class="msg-time">{{ item.timestamp ? new Date(item.timestamp).toLocaleString('fr-FR') : '' }}</span>
+            </div>
+          </li>
 
-      </ul>
-    </div>
-    <div class="input-container">
-      <div v-if="dropdown" class="dropdown">
-        <button @click="disconnectUser">Deco</button>
+        </ul>
       </div>
-      <div class="name" @click="dropdown = !dropdown">
-        <span class="material-symbols-outlined">expand_more</span>
-        <span>{{ username }}</span>
-      </div>
-      <div class="message">
-        <input v-on:keyup.enter="sendMessage" type="text" id="name" name="name" v-model="message"/>
-        <button @click="sendMessage"><span class="material-symbols-outlined icon">send</span>
-        </button>
-      </div>
+      <div class="input-container">
+        <div v-if="dropdown" class="dropdown">
+          <button @click="disconnectUser">Deco</button>
+        </div>
+        <div class="name" @click="dropdown = !dropdown">
+          <span class="material-symbols-outlined">expand_more</span>
+          <span>{{ username }}</span>
+        </div>
+        <div class="message">
+          <input v-on:keyup.enter="sendMessage" type="text" id="name" name="name" v-model="message" autocomplete="off"/>
+          <button @click="sendMessage"><span class="material-symbols-outlined icon">send</span>
+          </button>
+        </div>
 
+      </div>
     </div>
   </div>
 
@@ -99,16 +101,26 @@ export default {
 
 @import url('https://fonts.googleapis.com/css2?family=Chathura:wght@700;800&display=swap');
 
+.chat{
+
+  width: 100vw;
+  height: 100vh;
+}
 .chat-area {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
   display: flex;
   flex-direction: column;
   border: 1px solid var(--color-border);
   box-shadow: 0 0 5px var(--dark-color);
-  margin: 0 100px;
   background-color: var(--chat-background-color);
   border-radius: 20px;
   overflow: hidden;
-
+  font-size: 2em;
+  justify-content: center;
+  width: 80%;
 }
 
 .dropdown {
@@ -119,7 +131,8 @@ export default {
 
 @media (max-width: 800px) {
   .chat-area {
-    margin: 0;
+    width: 95%;
+    font-size: 1.5em;
   }
 
   .name {
@@ -195,6 +208,10 @@ export default {
 
 .chat-area ul > li:last-child {
   border-bottom: 1px solid var(--color-border);
+}
+
+.chat-area ul > li:first-child {
+  border: none;
 }
 
 .chat-area ul > li.me {
