@@ -14,9 +14,6 @@ const lightIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="
 
 export default defineComponent({
   name: "ToggleDarkMode",
-  data(){
-    return
-  },
   methods:{
     toggleTheme() {
       isDarkmode = !isDarkmode
