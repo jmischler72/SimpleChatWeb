@@ -3,7 +3,9 @@
 import ToggleDarkMode from "@/components/ToggleDarkMode.vue";
 import TextEditor from "@/components/TextEditor.vue";
 import ChatList from "@/components/ChatList.vue";
-import GifPicker from "@/components/GifPicker.vue";
+import DropdownUser from "@/components/DropdownUser.vue";
+import router from "@/router";
+import NameInput from "@/components/NameInput.vue";
 
 export default {
   data() {
@@ -12,10 +14,11 @@ export default {
     };
   },
   components: {
-    GifPicker,
+    DropdownUser,
     ChatList,
     TextEditor,
     ToggleDarkMode,
+    NameInput
   },
   methods: {
     handleUsernameChange(value: string) {
@@ -27,12 +30,20 @@ export default {
       this.username = null;
     }
   },
+  mounted(){
+    if(!this.username){
+      router.push("/");
+    }
+  }
+
 };
 </script>
 
 <template>
-  <div class="w-full h-full bg-[--medium-color2] dark:bg-[--dark-color2]">
-    <div class="flex flex-row absolute right-3 my-6 justify-end gap-2 items-center">
+  <div v-if="username" class="w-full h-full bg-[--medium-color2] dark:bg-[--dark-color2]">
+
+    <div class="flex flex-row absolute right-6 my-6 justify-end gap-3 items-center">
+      <DropdownUser :username="username" @userDisconnected="disconnectUser"></DropdownUser>
       <ToggleDarkMode></ToggleDarkMode>
     </div>
     <div class="w-full h-full justify-center chat">
@@ -40,8 +51,10 @@ export default {
       <TextEditor :username="username"></TextEditor>
     </div>
   </div>
-
-<!--  <GifPicker api-key="AIzaSyCVZmVXOO1pCLBjRnjMu3wK_HhFtw6BNwI"></GifPicker>-->
+  <div v-else>
+    <NameInput @usernameChanged="handleUsernameChange"></NameInput>
+  </div>
+  <!--  <GifPicker api-key="AIzaSyCVZmVXOO1pCLBjRnjMu3wK_HhFtw6BNwI"></GifPicker>-->
 
 </template>
 
