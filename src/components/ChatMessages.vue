@@ -222,7 +222,8 @@ export default {
 .name {
   padding: 14px;
   text-align: right;
-  width: 100px;
+  width: 200px;
+  max-width: 250px;
   overflow: hidden;
   text-overflow: ellipsis;
   color: #5d7185;

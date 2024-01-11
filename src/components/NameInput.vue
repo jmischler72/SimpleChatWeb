@@ -20,7 +20,7 @@ export default {
     <div class="Wrapper">
       <h1 class="Title">Simple Chat</h1>
       <div class="Input">
-        <input type="text" id="input" class="Input-text" v-model="name" placeholder="Your name, ex: Jean">
+        <input v-on:keyup.enter="handleChange" type="text" id="input" class="Input-text" v-model="name" placeholder="Your name, ex: Jean">
         <button @click="handleChange"><span class="material-symbols-outlined">arrow_forward</span>
         </button>
       </div>
