@@ -5,7 +5,7 @@ import TextEditor from "@/components/TextEditor.vue";
 import ChatList from "@/components/ChatList.vue";
 import DropdownUser from "@/components/DropdownUser.vue";
 import router from "@/router";
-import NameInput from "@/components/NameInput.vue";
+import LoginComponent from "@/components/LoginComponent.vue";
 
 export default {
   data() {
@@ -14,14 +14,15 @@ export default {
     };
   },
   components: {
+    LoginComponent,
     DropdownUser,
     ChatList,
     TextEditor,
     ToggleDarkMode,
-    NameInput
   },
   methods: {
     handleUsernameChange(value: string) {
+      console.log(value);
       this.username = value;
       localStorage.setItem('username', value);
     },
@@ -30,8 +31,8 @@ export default {
       this.username = null;
     }
   },
-  mounted(){
-    if(!this.username){
+  mounted() {
+    if (!this.username) {
       router.push("/");
     }
   }
@@ -40,8 +41,10 @@ export default {
 </script>
 
 <template>
+
   <div v-if="username" class="w-full h-full bg-[--medium-color3] dark:bg-[--dark-color2]">
-    <div class="flex flex-row absolute sm:right-6 right-2 sm:my-6 my-2 justify-end gap-3 items-center bg-white dark:bg-gray-800 p-2 rounded-lg shadow-lg">
+    <div
+        class="flex flex-row absolute sm:right-6 right-2 sm:my-6 my-2 justify-end gap-3 items-center bg-white dark:bg-gray-800 p-2 rounded-lg shadow-lg">
       <DropdownUser :username="username" @userDisconnected="disconnectUser"></DropdownUser>
       <ToggleDarkMode></ToggleDarkMode>
     </div>
@@ -50,10 +53,9 @@ export default {
       <TextEditor :username="username"></TextEditor>
     </div>
   </div>
-  <div v-else>
-    <NameInput @usernameChanged="handleUsernameChange"></NameInput>
+  <div v-else class="flex h-full justify-center items-center">
+    <LoginComponent @usernameChanged="handleUsernameChange"></LoginComponent>
   </div>
-
 </template>
 
 <style scoped>

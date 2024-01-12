@@ -1,7 +1,7 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import {getDatabase, limitToLast, onChildAdded, query, ref} from "firebase/database";
-import type {Message} from "@/components/message";
+import type {Message} from "@/components/types/message";
 import {app} from "@/firebase/init";
 
 const db = getDatabase(app);
