@@ -16,7 +16,8 @@ export default defineComponent({
   data() {
     return {
       message: '',
-      gifPickerOpen: false
+      gifPickerOpen: false,
+      tenorAPIKey : import.meta.env.VITE_TENOR_API_KEY,
     }
   },
   methods: {
@@ -39,6 +40,7 @@ export default defineComponent({
         timestamp: serverTimestamp(),
       });
       this.message = "";
+      this.gifPickerOpen = false;
     }
   }
 })
@@ -166,7 +168,7 @@ export default defineComponent({
           placeholder="Type your text here..." maxlength="250" v-model="message"/>
     </div>
     <div v-if="gifPickerOpen" class="gifpicker absolute top-0 shadow-2xl">
-      <GifPicker api-key="AIzaSyCVZmVXOO1pCLBjRnjMu3wK_HhFtw6BNwI" @gifSent="sendGif">
+      <GifPicker :api-key="tenorAPIKey" @gifSent="sendGif">
       </GifPicker>
     </div>
 
