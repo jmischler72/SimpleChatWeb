@@ -54,7 +54,6 @@ export default {
   <div v-else>
     <NameInput @usernameChanged="handleUsernameChange"></NameInput>
   </div>
-  <!--  <GifPicker api-key="AIzaSyCVZmVXOO1pCLBjRnjMu3wK_HhFtw6BNwI"></GifPicker>-->
 
 </template>
 
