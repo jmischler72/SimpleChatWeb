@@ -48,14 +48,14 @@ export default {
 </script>
 
 <template>
-  <div class="w-[16rem] h-[20rem] flex flex-col bg-white rounded-lg shadow-[0_-1px_5px_rgba(0,0,0,0.4)] p-1">
-    <header class="bg-[--light-color] shadow-lg relative z-1 rounded-lg px-1 py-2">
+  <div class="w-[16rem] h-[20rem] flex flex-col bg-white dark:bg-gray-900 rounded-lg shadow-[0_-1px_5px_rgba(0,0,0,0.4)] p-1">
+    <header class="bg-white dark:bg-gray-800 shadow-lg relative z-1 rounded-lg px-1 py-2">
       <div class="flex items-center justify-between w-full ">
-        <div class="flex items-center justify-between w-full rounded-lg border border-gray-500 gap-2 relative ">
+        <div class="flex items-center justify-between w-full rounded-lg border border-gray-500 gap-2 relative dark:text-white ">
           <input type="text"
                  v-on:keyup.enter="onSearch"
                  v-model="search"
-                 class="w-[80%] flex border-none bg-transparent py-2 text-sm placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 h-12 px-4"
+                 class="w-[80%] flex border-none rounded-lg bg-transparent py-2 text-sm placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 h-12 px-4"
                  placeholder="Search for gifs...">
           <div class="absolute right-2 flex items-center h-full- cursor-pointer" @click="onSearch">
             <span class="material-symbols-outlined">search</span>

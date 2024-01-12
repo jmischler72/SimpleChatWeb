@@ -40,8 +40,7 @@ export default {
 </script>
 
 <template>
-  <div v-if="username" class="w-full h-full bg-[--medium-color2] dark:bg-[--dark-color2]">
-
+  <div v-if="username" class="w-full h-full bg-[--medium-color3] dark:bg-[--dark-color2]">
     <div class="flex flex-row absolute right-6 my-6 justify-end gap-3 items-center">
       <DropdownUser :username="username" @userDisconnected="disconnectUser"></DropdownUser>
       <ToggleDarkMode></ToggleDarkMode>

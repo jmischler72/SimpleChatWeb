@@ -19,13 +19,6 @@ export default defineComponent({
     }
   },
   methods: {
-    parseGifFromMessage(message: string): string | null {
-      const parts = message.split('>');
-      if (parts[0] == "gif") {
-        return parts[1];
-      }
-      return null
-    },
     async updateScroll() {
       await this.$nextTick();
       const element: HTMLElement | null = document.getElementById("container");
@@ -34,7 +27,7 @@ export default defineComponent({
     }
   },
   mounted() {
-    setTimeout(()=> this.updateScroll(), 1)
+    setTimeout(() => this.updateScroll(), 1)
     onChildAdded(queryMessages, (data) => {
       this.messages.push(data.val() as Message);
       this.updateScroll();
@@ -57,9 +50,9 @@ export default defineComponent({
           </div>
           <div class="w-full flex flex-row items-center justify-between float-left p-4">
             <div
-                v-if="parseGifFromMessage(message.message)">
+                v-if="message.gif">
               <img
-                  :src="parseGifFromMessage(message.message)"
+                  :src="message.gif"
                   alt="Gif 2"
                   width="100"
                   height="100"
@@ -68,7 +61,9 @@ export default defineComponent({
               />
             </div>
 
-            <p v-else class="text-md text-gray-800 dark:text-gray-200 p-4">{{ message.message }}</p>
+            <p v-else-if="message.message" class="text-md text-gray-800 dark:text-gray-200 p-4">{{
+                message.message
+              }}</p>
             <span class="text-sm text-gray-500 dark:text-gray-400">{{
                 message.timestamp ? new Date(message.timestamp).toLocaleString('fr-FR') : ''
               }}</span>

@@ -16,16 +16,18 @@ export default defineComponent({
   data() {
     return {
       message: '',
-      gifPickerOpen: false,
-      tenorAPIKey : import.meta.env.VITE_TENOR_API_KEY,
+      gifDropdownOpened: false,
+      tenorAPIKey: import.meta.env.VITE_TENOR_API_KEY,
     }
   },
   methods: {
+    toggleGifDropdown() {
+      this.gifDropdownOpened = !this.gifDropdownOpened;
+    },
     sendMessage() {
       if (this.message === "") {
         return;
       }
-
       set(push(messagesRef), {
         username: this.username,
         message: this.message,
@@ -36,13 +38,12 @@ export default defineComponent({
     sendGif(url: string) {
       set(push(messagesRef), {
         username: this.username,
-        message: `gif>${url}`,
+        gif: url,
         timestamp: serverTimestamp(),
       });
-      this.message = "";
-      this.gifPickerOpen = false;
+      this.gifDropdownOpened = false;
     }
-  }
+  },
 })
 </script>
 
@@ -134,7 +135,7 @@ export default defineComponent({
       <!--        </svg>-->
       <!--      </button>-->
       <button
-          @click="gifPickerOpen = !gifPickerOpen"
+          @click.stop="toggleGifDropdown"
           class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 text-gray-600 dark:text-gray-400">
         <span class="sr-only">Image</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -167,9 +168,11 @@ export default defineComponent({
           class="w-full h-full p-6 py-8 text-gray-600 dark:text-gray-200 dark:bg-gray-700 text-md resize-none outline-none overflow-y-auto"
           placeholder="Type your text here..." maxlength="250" v-model="message"/>
     </div>
-    <div v-if="gifPickerOpen" class="gifpicker absolute top-0 shadow-2xl">
-      <GifPicker :api-key="tenorAPIKey" @gifSent="sendGif">
-      </GifPicker>
+    <div v-if="gifDropdownOpened" class="gifpicker absolute top-0 shadow-2xl">
+      <div v-click-outside="toggleGifDropdown">
+        <GifPicker :api-key="tenorAPIKey" @gifSent="sendGif">
+        </GifPicker>
+      </div>
     </div>
 
   </div>
