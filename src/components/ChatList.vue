@@ -23,11 +23,9 @@ export default defineComponent({
       await this.$nextTick();
       const element: HTMLElement | null = document.getElementById("container");
       if (element) element.scrollTop = element.scrollHeight;
-      console.log("f");
     }
   },
   mounted() {
-    setTimeout(() => this.updateScroll(), 1)
     onChildAdded(queryMessages, (data) => {
       this.messages.push(data.val() as Message);
       this.updateScroll();
@@ -58,6 +56,7 @@ export default defineComponent({
                   height="100"
                   class="aspect-square object-cover w-full rounded-lg overflow-hidden"
                   data-state="closed"
+                  @load="updateScroll"
               />
             </div>
 
