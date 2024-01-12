@@ -7,15 +7,13 @@ export default {
   },
   methods: {
     handleChange() {
-      this.$emit("name-changed", this.name)
+      this.$emit('usernameChanged', this.name);
     }
   },
 }
 </script>
 
 <template>
-  <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"/>
   <div class="body-class">
     <div class="Wrapper">
       <h1 class="Title">Simple Chat</h1>

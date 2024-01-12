@@ -1,7 +1,11 @@
 <script lang="ts">
 
+import ToggleDarkMode from "@/components/ToggleDarkMode.vue";
+import TextEditor from "@/components/TextEditor.vue";
+import ChatList from "@/components/ChatList.vue";
+import DropdownUser from "@/components/DropdownUser.vue";
+import router from "@/router";
 import NameInput from "@/components/NameInput.vue";
-import ChatMessages from "@/components/ChatMessages.vue";
 
 export default {
   data() {
@@ -10,8 +14,11 @@ export default {
     };
   },
   components: {
-    ChatMessages,
-    NameInput,
+    DropdownUser,
+    ChatList,
+    TextEditor,
+    ToggleDarkMode,
+    NameInput
   },
   methods: {
     handleUsernameChange(value: string) {
@@ -23,18 +30,39 @@ export default {
       this.username = null;
     }
   },
+  mounted(){
+    if(!this.username){
+      router.push("/");
+    }
+  }
+
 };
 </script>
 
 <template>
+  <div v-if="username" class="w-full h-full bg-[--medium-color2] dark:bg-[--dark-color2]">
 
-  <div v-if="!username">
-    <NameInput @name-changed="handleUsernameChange"></NameInput>
+    <div class="flex flex-row absolute right-6 my-6 justify-end gap-3 items-center">
+      <DropdownUser :username="username" @userDisconnected="disconnectUser"></DropdownUser>
+      <ToggleDarkMode></ToggleDarkMode>
+    </div>
+    <div class="w-full h-full justify-center chat">
+      <ChatList :username="username"></ChatList>
+      <TextEditor :username="username"></TextEditor>
+    </div>
   </div>
-  <div  v-else>
-    <ChatMessages :username="username" @disconnect="disconnectUser"></ChatMessages>
+  <div v-else>
+    <NameInput @usernameChanged="handleUsernameChange"></NameInput>
   </div>
+
 </template>
 
 <style scoped>
+.chat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+  gap: 15px;
+}
 </style>
