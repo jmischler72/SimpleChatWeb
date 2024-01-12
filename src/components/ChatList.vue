@@ -34,7 +34,7 @@ export default defineComponent({
     }
   },
   mounted() {
-    this.updateScroll()
+    setTimeout(()=> this.updateScroll(), 1)
     onChildAdded(queryMessages, (data) => {
       this.messages.push(data.val() as Message);
       this.updateScroll();
