@@ -36,13 +36,13 @@ export default defineComponent({
 
 <template>
   <div id="container"
-       class="w-full max-w-[90rem] h-[70vh] mx-auto bg-white dark:bg-gray-800 shadow rounded-lg overflow-y-auto">
-    <div class="px-2 divide-y divide-gray-300 dark:divide-gray-700">
+       class="w-full max-w-[90rem] sm:h-[70vh] h-[78vh] mx-auto bg-white dark:bg-gray-800 shadow rounded-lg overflow-y-auto overflow-x-hidden">
+    <div class="sm:px-2 px-1 divide-y divide-gray-300 dark:divide-gray-700">
       <div v-for="message of messages">
-        <div class="flex items-center space-x-4 rounded-lg m-2"
+        <div class="flex items-center space-x-4 rounded-lg sm:m-2 mx-0 my-2"
              :class="{ [`bg-[--medium-color2] dark:bg-gray-700`]: message.username === username }">
           <div
-              class="h-full text-center w-[160px] border-r border-gray-300 dark:border-gray-700 p-4 overflow-hidden pl-6"
+              class="h-full text-center sm:w-[160px] w-[90px] border-r border-gray-300 dark:border-gray-700 p-4 overflow-hidden pl-6"
               :class="{ [`dark:border-gray-800`]: message.username === username }">
             <h3 class="text-lg font-semibold dark:text-gray-200 truncate">{{ message.username }}</h3>
           </div>
