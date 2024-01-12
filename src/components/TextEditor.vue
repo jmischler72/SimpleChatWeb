@@ -3,6 +3,7 @@ import {defineComponent} from 'vue'
 import {getDatabase, push, ref, serverTimestamp, set} from "firebase/database";
 import {app} from "@/firebase/init";
 import GifPicker from "@/components/GifPicker/GifPicker.vue";
+import type {ResponseObject} from "@/components/GifPicker/types/ResponseObject";
 
 const db = getDatabase(app);
 const messagesRef = ref(db, 'messages/');
@@ -17,11 +18,16 @@ export default defineComponent({
     return {
       message: '',
       gifDropdownOpened: false,
+      gifDropdownInitiated: false, // is used to render only once and then only use v-show so api is called only once
       tenorAPIKey: import.meta.env.VITE_TENOR_API_KEY,
     }
   },
   methods: {
+    closeGifDropdown() {
+      this.gifDropdownOpened = false;
+    },
     toggleGifDropdown() {
+      this.gifDropdownInitiated = true;
       this.gifDropdownOpened = !this.gifDropdownOpened;
     },
     sendMessage() {
@@ -35,10 +41,13 @@ export default defineComponent({
       });
       this.message = "";
     },
-    sendGif(url: string) {
+    sendGif(gif: ResponseObject) {
       set(push(messagesRef), {
         username: this.username,
-        gif: url,
+        gif: {
+          content_description: gif.content_description,
+          url: gif.media_formats['gif'].url,
+        },
         timestamp: serverTimestamp(),
       });
       this.gifDropdownOpened = false;
@@ -168,8 +177,8 @@ export default defineComponent({
           class="w-full h-full p-6 py-8 text-gray-600 dark:text-gray-200 dark:bg-gray-700 text-md resize-none outline-none overflow-y-auto"
           placeholder="Type your text here..." maxlength="250" v-model="message"/>
     </div>
-    <div v-if="gifDropdownOpened" class="gifpicker absolute top-0 shadow-2xl">
-      <div v-click-outside="toggleGifDropdown">
+    <div v-if="gifDropdownInitiated" v-show="gifDropdownOpened" class="gifpicker absolute top-0 shadow-2xl">
+      <div v-click-outside="closeGifDropdown">
         <GifPicker :api-key="tenorAPIKey" @gifSent="sendGif">
         </GifPicker>
       </div>

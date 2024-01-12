@@ -1,12 +1,12 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import {getDatabase, limitToLast, onChildAdded, query, ref} from "firebase/database";
-import {Message} from "@/components/message";
+import type {Message} from "@/components/message";
 import {app} from "@/firebase/init";
 
 const db = getDatabase(app);
 const messagesRef = ref(db, 'messages/');
-const queryMessages = query(messagesRef, limitToLast(5));
+const queryMessages = query(messagesRef, limitToLast(20));
 
 export default defineComponent({
   name: "ChatList",
@@ -47,18 +47,15 @@ export default defineComponent({
             <h3 class="text-lg font-semibold dark:text-gray-200 truncate">{{ message.username }}</h3>
           </div>
           <div class="w-full flex flex-row items-center justify-between float-left p-4">
-            <div
-                v-if="message.gif">
-              <img
-                  :src="message.gif"
-                  alt="Gif 2"
-                  width="100"
-                  height="100"
-                  class="aspect-square object-cover w-full rounded-lg overflow-hidden"
-                  data-state="closed"
-                  @load="updateScroll"
-              />
-            </div>
+
+            <img
+                v-if="message.gif"
+                :src="message.gif.url"
+                :alt="message.gif.content_description"
+                class="h-full max-h-64 w-auto object-cover rounded-lg overflow-hidden"
+                data-state="closed"
+                @load="updateScroll"
+            />
 
             <p v-else-if="message.message" class="text-md text-gray-800 dark:text-gray-200 p-4">{{
                 message.message
