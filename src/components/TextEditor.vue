@@ -161,6 +161,7 @@ export default defineComponent({
         </button>
       </div>
       <input
+          v-on:keyup.enter="sendMessage"
           class="w-full h-full p-6 py-8 text-gray-600 dark:text-gray-200 dark:bg-gray-700 text-md resize-none outline-none overflow-y-auto"
           placeholder="Type your text here..." maxlength="250" v-model="message"/>
     </div>
