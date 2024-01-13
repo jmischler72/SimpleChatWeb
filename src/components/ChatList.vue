@@ -6,7 +6,7 @@ import {app} from "@/firebase/init";
 
 const db = getDatabase(app);
 const messagesRef = ref(db, 'messages/');
-const queryMessages = query(messagesRef, limitToLast(20));
+const queryMessages = query(messagesRef, limitToLast(25));
 
 export default defineComponent({
   name: "ChatList",
@@ -42,9 +42,9 @@ export default defineComponent({
         <div class="flex items-center space-x-4 rounded-lg sm:m-2 mx-0 my-2"
              :class="{ [`bg-[--medium-color2] dark:bg-gray-700`]: message.username === username }">
           <div
-              class="h-full text-center sm:w-[160px] w-[90px] border-r border-gray-300 dark:border-gray-700 p-4 overflow-hidden pl-6"
+              class="h-full text-center w-[160px] border-r border-gray-300 dark:border-gray-700 p-4 pl-6"
               :class="{ [`dark:border-gray-800`]: message.username === username }">
-            <h3 class="text-lg font-semibold dark:text-gray-200 truncate">{{ message.username }}</h3>
+            <h3 class="sm:text-lg text-sm font-semibold dark:text-gray-200 truncate">{{ message.username }}</h3>
           </div>
           <div class="w-full flex flex-row items-center justify-between float-left p-4">
 
@@ -57,10 +57,10 @@ export default defineComponent({
                 @load="updateScroll"
             />
 
-            <p v-else-if="message.message" class="text-md text-gray-800 dark:text-gray-200 p-4">{{
+            <p v-else-if="message.message" class="sm:text-md text-sm text-gray-800 dark:text-gray-200 p-4">{{
                 message.message
               }}</p>
-            <span class="text-sm text-gray-500 dark:text-gray-400">{{
+            <span class="sm:text-sm text-xs text-gray-500 dark:text-gray-400 ml-2">{{
                 message.timestamp ? new Date(message.timestamp).toLocaleString('fr-FR') : ''
               }}</span>
           </div>
