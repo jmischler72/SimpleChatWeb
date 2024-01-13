@@ -78,16 +78,19 @@ export default {
 <template>
   <div
       class="w-[16rem] h-[20rem] flex flex-col bg-white dark:bg-gray-900 rounded-lg shadow-[0_-1px_5px_rgba(0,0,0,0.4)] p-1">
-    <header class="bg-white dark:bg-gray-800 shadow-lg relative z-1 rounded-lg px-1 py-2">
-      <div class="flex items-center justify-between w-full ">
+    <header class="flex flex-row bg-white dark:bg-gray-800 shadow-lg z-1 rounded-lg px-1 py-2 dark:text-gray-300">
+      <div v-show="search" class="flex items-center px-2 cursor-pointer" @click="search=''">
+        <span class="material-symbols-outlined">arrow_back</span>
+      </div>
+      <div class="flex items-center justify-between w-full  ">
         <div
-            class="flex items-center justify-between w-full rounded-lg border border-gray-500 gap-2 relative dark:text-white ">
+            class="flex items-center justify-between w-full rounded-lg border border-gray-500 gap-2 relative transition ease-in-out delay-150 ">
           <input type="text"
                  v-on:keyup.enter="getGifsFromSearch"
                  v-model="search"
                  class="w-[80%] flex border-none rounded-lg bg-transparent py-2 text-sm placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 h-12 px-4"
                  placeholder="Search for gifs...">
-          <div class="absolute right-2 flex items-center h-full- cursor-pointer" @click="getGifsFromSearch">
+          <div class="absolute right-2 flex items-center h-full cursor-pointer p-2" @click="getGifsFromSearch">
             <span class="material-symbols-outlined">search</span>
           </div>
         </div>

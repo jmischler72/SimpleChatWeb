@@ -42,7 +42,7 @@ export default {
 
 <template>
 
-  <div v-if="username" class="w-full sm:h-full h-dvh bg-[--medium-color3] dark:bg-[--dark-color2]">
+  <div v-if="username" class="w-full h-dvh bg-[--medium-color3] dark:bg-[--dark-color2]">
     <div
         class="flex flex-row absolute sm:right-6 right-2 sm:my-6 my-2 justify-end gap-3 items-center bg-white dark:bg-gray-800 p-2 rounded-lg shadow-lg">
       <DropdownUser :username="username" @userDisconnected="disconnectUser"></DropdownUser>

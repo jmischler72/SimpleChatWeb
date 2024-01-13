@@ -145,25 +145,14 @@ export default defineComponent({
       <!--      </button>-->
       <button
           @click.stop="toggleGifDropdown"
-          class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 text-gray-600 dark:text-gray-400">
+          class="editor-button">
         <span class="sr-only">Image</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
-          <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
-          <circle cx="9" cy="9" r="2"></circle>
-          <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path>
-        </svg>
+        <span class="material-symbols-outlined md-36">gif</span>
       </button>
       <button
-          class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 text-gray-600 dark:text-gray-400">
+          class="editor-button !px-4">
         <span class="sr-only">Emoji</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
-          <circle cx="12" cy="12" r="10"></circle>
-          <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
-          <line x1="9" x2="9.01" y1="9" y2="9"></line>
-          <line x1="15" x2="15.01" y1="9" y2="9"></line>
-        </svg>
+        <span class="material-symbols-outlined md-18">mood</span>
       </button>
     </div>
     <div class="overflow-y-auto relative">
@@ -177,7 +166,7 @@ export default defineComponent({
           class="w-full h-full p-6 py-8 text-gray-600 dark:text-gray-200 dark:bg-gray-700 text-md resize-none outline-none overflow-y-auto"
           placeholder="Type your text here..." maxlength="250" v-model="message"/>
     </div>
-    <div v-if="gifDropdownInitiated" v-show="gifDropdownOpened" class="gifpicker absolute top-0 shadow-2xl">
+    <div v-if="gifDropdownInitiated" v-show="gifDropdownOpened" class="translate-y-[-100%] absolute top-0 shadow-2xl">
       <div v-click-outside="closeGifDropdown">
         <GifPicker :api-key="tenorAPIKey" @gifSent="sendGif">
         </GifPicker>
@@ -188,7 +177,8 @@ export default defineComponent({
 </template>
 
 <style scoped>
-.gifpicker {
-  transform: translate(0, -100%);
+.editor-button {
+  @apply inline-flex items-center justify-center rounded-lg text-sm font-medium transition-colors hover:bg-[--hover-color] active:bg-[--active-color] dark:hover:bg-[--dark-hover-color] dark:active:bg-[--dark-active-color] h-10 px-2 py-2 text-gray-600 dark:text-gray-400;
 }
+
 </style>

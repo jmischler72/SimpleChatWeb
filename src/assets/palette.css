@@ -6,4 +6,10 @@
 
 :root{
     --background-color: var(--medium-color2);
+
+    --hover-color: theme("colors.gray.100");
+    --active-color: theme("colors.gray.300");
+
+    --dark-hover-color: theme("colors.gray.600");
+    --dark-active-color: theme("colors.slate.700");
 }
