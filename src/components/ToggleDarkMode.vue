@@ -1,9 +1,6 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 
-
-let isDarkmode = false
-
 const darkIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
 </svg>`
@@ -14,20 +11,26 @@ const lightIcon = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="
 
 export default defineComponent({
   name: "ToggleDarkMode",
-  methods:{
+  data() {
+    return {
+      isDarkmode: window.matchMedia('(prefers-color-scheme: dark)').matches,
+    }
+  },
+  methods: {
     toggleTheme() {
-      isDarkmode = !isDarkmode
-      if(isDarkmode){
+      this.isDarkmode = !this.isDarkmode
+      if (this.isDarkmode) {
         document.documentElement.classList.add("dark");
-      }else {
+      } else {
         document.documentElement.classList.remove("dark");
       }
       this.switchTheme()
     },
     switchTheme() {
       const switchToggle = document.querySelector('#switch-toggle');
+      if (!switchToggle) return;
 
-      if (isDarkmode) {
+      if (this.isDarkmode) {
         switchToggle.classList.remove('bg-yellow-500')
         switchToggle.classList.add('bg-gray-700', 'translate-x-3/4')
         setTimeout(() => {
@@ -41,6 +44,9 @@ export default defineComponent({
         }, 250);
       }
     }
+  },
+  mounted() {
+    this.switchTheme();
   }
 })
 </script>

@@ -3,23 +3,13 @@ import App from './App.vue'
 import router from './router'
 import './index.css'
 import './assets/main.css'
+import {clickOutside} from "@/directives/ClickOutsideDirective";
 
-const clickOutside = {
-    beforeMount: (el, binding) => {
-        el.clickOutsideEvent = event => {
-            // here I check that click was outside the el and his children
-            if (!(el == event.target || el.contains(event.target))) {
-                // and if it did, call method provided in attribute value
-                binding.value();
-            }
-        };
-        document.addEventListener("click", el.clickOutsideEvent);
-    },
-    unmounted: el => {
-        document.removeEventListener("click", el.clickOutsideEvent);
-    },
-};
-
+if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    document.documentElement.classList.add('dark')
+} else {
+    document.documentElement.classList.remove('dark')
+}
 
 createApp(App)
     .directive("click-outside", clickOutside)

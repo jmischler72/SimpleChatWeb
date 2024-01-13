@@ -59,7 +59,8 @@ export default {
   <div v-if="user" class="w-full h-dvh bg-[--medium-color3] dark:bg-[--dark-color2]">
     <div
         class="flex flex-row absolute sm:right-6 right-2 sm:my-6 my-2 justify-end gap-3 items-center bg-white dark:bg-gray-800 p-2 rounded-lg shadow-lg">
-      <DropdownUser :username="user.displayName" :photo-url="user.userInfo?.photoURL" @userDisconnected="disconnectUser"></DropdownUser>
+      <DropdownUser :username="user.displayName" :photo-url="user.userInfo?.photoURL"
+                    @userDisconnected="disconnectUser"></DropdownUser>
       <ToggleDarkMode></ToggleDarkMode>
     </div>
     <div class="w-full h-full justify-center chat">
@@ -67,7 +68,7 @@ export default {
       <TextEditor :user="user"></TextEditor>
     </div>
   </div>
-  <div v-else class="flex h-full justify-center items-center">
+  <div v-else class="flex h-full justify-center items-center bg-[--medium-color3] dark:bg-[--dark-color2]">
     <LoginComponent @guestLoggedIn="handleGuestUserLogin" @userLoggedIn="handleUserLogin"></LoginComponent>
   </div>
 </template>

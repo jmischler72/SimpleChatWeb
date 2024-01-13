@@ -1,5 +1,5 @@
 <script lang="ts">
-import {GoogleAuthProvider, getAuth, signInWithPopup} from "firebase/auth";
+import {GoogleAuthProvider, getAuth, signInWithPopup, signInWithRedirect, getRedirectResult} from "firebase/auth";
 
 
 const provider = new GoogleAuthProvider();
@@ -14,33 +14,37 @@ export default {
     }
   },
   methods: {
+    handleLoginWithGoogleRedirect() {
+      signInWithRedirect(auth, provider);
+    },
     handleLoginWithGoogle() {
+      //Documentation - Auth Google: https://firebase.google.com/docs/auth/web/google-signin?hl=fr
       signInWithPopup(auth, provider)
           .then((result) => {
-            // This gives you a Google Access Token. You can use it to access the Google API.
-            // const credential = GoogleAuthProvider.credentialFromResult(result);
-            // const token = credential.accessToken;
-            // The signed-in user info.
             const user = result.user;
-            // IdP data available using getAdditionalUserInfo(result)
-            // ...
             this.$emit('userLoggedIn', user);
           }).catch((error) => {
-            console.log(error);
-        // Handle Errors here.
-        // const errorCode = error.code;
-        // const errorMessage = error.message;
-        // The email of the user's account used.
-        // const email = error.customData.email;
-        // The AuthCredential type that was used.
-        // const credential = GoogleAuthProvider.credentialFromError(error);
+        console.log(error);
       });
     },
     handleLoginAsGuest() {
-      if(!this.guestUsername) return;
+      if (!this.guestUsername) return;
       this.$emit('guestLoggedIn', this.guestUsername);
     }
   },
+  mounted() {
+    getRedirectResult(auth)
+        .then((result) => {
+          if (!result) {
+            return;
+          }
+
+          const user = result.user;
+          this.$emit('userLoggedIn', user);
+        }).catch((error) => {
+      console.log(error);
+    });
+  }
 }
 </script>
 
@@ -50,7 +54,7 @@ export default {
   // https://v0.dev/t/0RIwE6rcLp9
   -->
 
-  <div class="rounded-lg border border-gray-100 shadow-lg w-full max-w-md mx-auto bg-white">
+  <div class="rounded-lg border border-gray-100 dark:border-gray-700 shadow-lg w-full max-w-md mx-auto bg-white dark:bg-gray-800 dark:text-white">
     <div class="flex flex-col space-y-1.5 p-6">
       <h3 class="font-semibold tracking-tight text-2xl text-center">Simple Chat</h3>
       <p class="text-sm text-muted-foreground text-center">Choose a name to join as guest or login</p>
@@ -60,7 +64,7 @@ export default {
 
         <div class="flex flex-row items-center justify-center">
           <input
-              class="align-middle flex h-10 w-full rounded-md border bg-background px-3 py-2 text-sm  placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-50"
+              class="align-middle flex h-10 w-full rounded-md border dark:bg-gray-700 px-3 py-2 text-sm placeholder:text-gray-200 focus-visible:outline-none focus-visible:ring-2"
               id="name"
               v-on:keyup.enter="handleLoginAsGuest"
               v-model="guestUsername"
@@ -81,7 +85,7 @@ export default {
       <div class="flex justify-center space-x-2 border-t pt-4">
         <button
             class="justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 flex items-center gap-2"
-            @click="handleLoginWithGoogle">
+            @click="handleLoginWithGoogleRedirect">
           <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
