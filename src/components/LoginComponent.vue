@@ -1,5 +1,9 @@
 <script lang="ts">
-import {GoogleAuthProvider, getAuth, signInWithPopup, signInWithRedirect, getRedirectResult} from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  getAuth,
+  signInWithRedirect,
+} from "firebase/auth";
 
 
 const provider = new GoogleAuthProvider();
@@ -17,33 +21,10 @@ export default {
     handleLoginWithGoogleRedirect() {
       signInWithRedirect(auth, provider);
     },
-    handleLoginWithGoogle() {
-      //Documentation - Auth Google: https://firebase.google.com/docs/auth/web/google-signin?hl=fr
-      signInWithPopup(auth, provider)
-          .then((result) => {
-            const user = result.user;
-            this.$emit('userLoggedIn', user);
-          }).catch((error) => {
-        console.log(error);
-      });
-    },
     handleLoginAsGuest() {
       if (!this.guestUsername) return;
       this.$emit('guestLoggedIn', this.guestUsername);
     }
-  },
-  mounted() {
-    getRedirectResult(auth)
-        .then((result) => {
-          if (!result) {
-            return;
-          }
-
-          const user = result.user;
-          this.$emit('userLoggedIn', user);
-        }).catch((error) => {
-      console.log(error);
-    });
   }
 }
 </script>
@@ -54,7 +35,8 @@ export default {
   // https://v0.dev/t/0RIwE6rcLp9
   -->
 
-  <div class="rounded-lg border border-gray-100 dark:border-gray-700 shadow-lg w-full max-w-md mx-auto bg-white dark:bg-gray-800 dark:text-white">
+  <div
+      class="rounded-lg border border-gray-100 dark:border-gray-700 shadow-lg w-full max-w-md mx-auto bg-white dark:bg-gray-800 dark:text-white">
     <div class="flex flex-col space-y-1.5 p-6">
       <h3 class="font-semibold tracking-tight text-2xl text-center">Simple Chat</h3>
       <p class="text-sm text-muted-foreground text-center">Choose a name to join as guest or login</p>

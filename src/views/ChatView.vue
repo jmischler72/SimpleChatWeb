@@ -7,14 +7,21 @@ import DropdownUser from "@/components/DropdownUser.vue";
 import LoginComponent from "@/components/LoginComponent.vue";
 import type {User as FirebaseUser} from "firebase/auth";
 import type {ChatUser} from "@/types/ChatUser";
+import {getAuth, signOut, onAuthStateChanged} from "firebase/auth";
+import LoadingSpinner from "@/components/LoadingSpinner.vue";
+
+
+const auth = getAuth();
 
 export default {
   data() {
     return {
       user: null as ChatUser | null,
+      loading: true
     };
   },
   components: {
+    LoadingSpinner,
     LoginComponent,
     DropdownUser,
     ChatList,
@@ -38,13 +45,24 @@ export default {
       localStorage.setItem('username', username);
     },
     disconnectUser() {
-      if (this.user) {
+      if(!this.user) return;
+      if (this.user.guest) {
         localStorage.removeItem('username');
         this.user = null;
+      }else{
+        signOut(auth);
       }
     }
   },
   mounted() {
+    onAuthStateChanged(auth, (user) => {
+      this.loading = false;
+      if (user) {
+        this.handleUserLogin(user);
+      } else {
+        this.user = null;
+      }
+    });
     const guestUsername = localStorage.getItem('username');
     if (guestUsername) {
       this.handleGuestUserLogin(guestUsername);
@@ -67,6 +85,9 @@ export default {
       <ChatList :user="user"></ChatList>
       <TextEditor :user="user"></TextEditor>
     </div>
+  </div>
+  <div v-else-if="loading" class="flex h-full justify-center items-center bg-[--medium-color3] dark:bg-[--dark-color2]">
+    <LoadingSpinner></LoadingSpinner>
   </div>
   <div v-else class="flex h-full justify-center items-center bg-[--medium-color3] dark:bg-[--dark-color2]">
     <LoginComponent @guestLoggedIn="handleGuestUserLogin" @userLoggedIn="handleUserLogin"></LoginComponent>
