@@ -36,7 +36,7 @@ export default defineComponent({
 
 <template>
   <div id="container"
-       class="w-full max-w-[90rem] sm:h-[70vh] h-[78vh] mx-auto bg-white dark:bg-gray-800 shadow rounded-lg overflow-y-auto overflow-x-hidden">
+       class="w-full max-w-[90rem] h-[70vh] mx-auto bg-white dark:bg-gray-800 shadow rounded-lg overflow-y-auto overflow-x-hidden">
     <div class="sm:px-2 px-1 divide-y divide-gray-300 dark:divide-gray-700">
       <div v-for="message of messages">
         <div class="flex items-center space-x-4 rounded-lg sm:m-2 mx-0 my-2"
