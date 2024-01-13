@@ -1,24 +1,36 @@
 <script lang="ts">
-import {defineComponent} from 'vue'
-import {getDatabase, limitToLast, onChildAdded, query, ref} from "firebase/database";
-import type {Message} from "@/components/types/message";
-import {app} from "@/firebase/init";
+import {defineComponent} from 'vue';
+import type {PropType} from 'vue';
+import {limitToLast, onChildAdded, query} from "firebase/database";
+import type {ChatMessage} from "@/types/ChatMessage";
+import type {ChatUser} from "@/types/ChatUser";
+import {messagesRef} from "@/firebase/init";
 
-const db = getDatabase(app);
-const messagesRef = ref(db, 'messages/');
+
 const queryMessages = query(messagesRef, limitToLast(25));
 
 export default defineComponent({
   name: "ChatList",
   props: {
-    username: String
+    user: {
+      type: Object as PropType<ChatUser>,
+      required: true,
+    },
   },
   data() {
     return {
-      messages: [] as Message[],
+      messages: [] as ChatMessage[],
     }
   },
   methods: {
+    isMessageFromCurrentUser(message: ChatMessage) {
+      if (message.user.guest && this.user.guest) {
+        return message.user.displayName === this.user.displayName;
+      } else if (!message.user.guest && !this.user.guest) {
+        return message.user.userInfo?.uid === this.user.userInfo?.uid;
+      }
+      return false;
+    },
     async updateScroll() {
       await this.$nextTick();
       const element: HTMLElement | null = document.getElementById("container");
@@ -27,7 +39,7 @@ export default defineComponent({
   },
   mounted() {
     onChildAdded(queryMessages, (data) => {
-      this.messages.push(data.val() as Message);
+      this.messages.push(data.val() as ChatMessage);
       this.updateScroll();
     });
   }
@@ -40,11 +52,17 @@ export default defineComponent({
     <div class="sm:px-2 px-1 divide-y divide-gray-300 dark:divide-gray-700">
       <div v-for="message of messages">
         <div class="flex items-center space-x-4 rounded-lg sm:m-2 mx-0 my-2"
-             :class="{ [`bg-[--medium-color2] dark:bg-gray-700`]: message.username === username }">
+             :class="{ [`bg-[--medium-color2] dark:bg-gray-700`]: isMessageFromCurrentUser(message)}">
           <div
-              class="h-full text-center w-[160px] border-r border-gray-300 dark:border-gray-700 p-4 pl-6"
-              :class="{ [`dark:border-gray-800`]: message.username === username }">
-            <h3 class="sm:text-lg text-sm font-semibold dark:text-gray-200 truncate">{{ message.username }}</h3>
+              class="flex flex-row items-center h-full justify-between w-[260px] min-w-[160px] border-r border-gray-300 dark:border-gray-700 p-4 px-8 dark:text-gray-200"
+              :class="{ [`dark:border-gray-800`]: isMessageFromCurrentUser(message) }">
+            <span v-if="message.user.guest" class="text-gray-400 italic text-base">Guest</span>
+            <div v-else>
+              <img v-if="message.user.userInfo?.photoURL" class="w-6 h-6 me-2 rounded-full"
+                   :src="message.user.userInfo?.photoURL" alt="user photo">
+              <span v-else class="material-symbols-outlined md-24 me-2 justify-center flex">account_circle</span>
+            </div>
+            <h3 class="text-xs sm:text-base font-semibold truncate">{{ message.user.displayName }}</h3>
           </div>
           <div class="w-full flex flex-row items-center justify-between float-left p-4">
 

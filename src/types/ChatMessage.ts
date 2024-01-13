@@ -1,5 +1,7 @@
-export type Message = {
-    username: string,
+import type {ChatUser} from "@/types/ChatUser";
+
+export type ChatMessage = {
+    user: ChatUser,
     message?: string,
     gif?: {
         content_description: string,

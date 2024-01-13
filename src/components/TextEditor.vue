@@ -1,18 +1,21 @@
 <script lang="ts">
-import {defineComponent} from 'vue'
-import {getDatabase, push, ref, serverTimestamp, set} from "firebase/database";
-import {app} from "@/firebase/init";
+import {defineComponent} from 'vue';
+import type {PropType} from 'vue';
+import {push, serverTimestamp, set} from "firebase/database";
 import GifPicker from "@/components/GifPicker/GifPicker.vue";
 import type {ResponseObject} from "@/components/GifPicker/types/ResponseObject";
+import type {ChatUser} from "@/types/ChatUser";
+import {messagesRef} from "@/firebase/init";
 
-const db = getDatabase(app);
-const messagesRef = ref(db, 'messages/');
 
 export default defineComponent({
   name: "TextEditor",
   components: {GifPicker},
   props: {
-    username: String
+    user: {
+      type: Object as PropType<ChatUser>,
+      required: true,
+    },
   },
   data() {
     return {
@@ -35,7 +38,7 @@ export default defineComponent({
         return;
       }
       set(push(messagesRef), {
-        username: this.username,
+        user: this.user,
         message: this.message,
         timestamp: serverTimestamp(),
       });
@@ -43,7 +46,7 @@ export default defineComponent({
     },
     sendGif(gif: ResponseObject) {
       set(push(messagesRef), {
-        username: this.username,
+        user: this.user,
         gif: {
           content_description: gif.content_description,
           url: gif.media_formats['gif'].url,
