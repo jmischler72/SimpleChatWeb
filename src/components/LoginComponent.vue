@@ -4,12 +4,13 @@ import {
   getAuth,
   signInWithRedirect,
 } from "firebase/auth";
+import {app} from "@/firebase/init";
 
 
 const provider = new GoogleAuthProvider();
 provider.addScope('profile');
 provider.addScope('email');
-const auth = getAuth();
+const auth = getAuth(app);
 
 export default {
   data() {
@@ -25,7 +26,7 @@ export default {
       if (!this.guestUsername) return;
       this.$emit('guestLoggedIn', this.guestUsername);
     }
-  }
+  },
 }
 </script>
 

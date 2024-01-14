@@ -7,11 +7,12 @@ import DropdownUser from "@/components/DropdownUser.vue";
 import LoginComponent from "@/components/LoginComponent.vue";
 import type {User as FirebaseUser} from "firebase/auth";
 import type {ChatUser} from "@/types/ChatUser";
-import {getAuth, signOut, onAuthStateChanged} from "firebase/auth";
+import {getAuth, signOut, onAuthStateChanged, getRedirectResult} from "firebase/auth";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
+import {app} from "@/firebase/init";
 
 
-const auth = getAuth();
+const auth = getAuth(app);
 
 export default {
   data() {
@@ -45,28 +46,41 @@ export default {
       localStorage.setItem('username', username);
     },
     disconnectUser() {
-      if(!this.user) return;
+      if (!this.user) return;
       if (this.user.guest) {
         localStorage.removeItem('username');
         this.user = null;
-      }else{
+      } else {
         signOut(auth);
       }
     }
   },
   mounted() {
+    getRedirectResult(auth)
+        .then((result) => {
+          console.log(result);
+          if (!result) {
+            return;
+          }
+          const user = result.user;
+          this.$emit('userLoggedIn', user);
+        }).catch((error) => {
+      console.log(error);
+    });
+
+    const guestUsername = localStorage.getItem('username');
+    if (guestUsername) {
+      this.handleGuestUserLogin(guestUsername);
+    }
     onAuthStateChanged(auth, (user) => {
       this.loading = false;
+      console.log(user);
       if (user) {
         this.handleUserLogin(user);
       } else {
         this.user = null;
       }
     });
-    const guestUsername = localStorage.getItem('username');
-    if (guestUsername) {
-      this.handleGuestUserLogin(guestUsername);
-    }
   }
 
 };
