@@ -22,12 +22,12 @@ export default defineComponent({
 <template>
 
   <div>
-    <button id="dropdownAvatarNameButton" data-dropdown-toggle="dropdown"
+    <button id="dropdownAvatarNameButton" data-dropdown-toggle="dropdown-user"
             class="flex items-center text-sm pe-1 font-bold text-gray-900 rounded-full hover:text-blue-600 dark:hover:text-blue-500 md:me-0 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-white"
             type="button">
       <span class="sr-only">Open user menu</span>
       <img v-if="photoUrl" class="w-8 h-8 me-2 rounded-full" :src="photoUrl" alt="user photo">
-      <span v-else class="material-symbols-outlined me-2 md-24 justify-center flex">account_circle</span>
+      <span v-else class="material-symbols-outlined me-2 md-24">account_circle</span>
       {{ username }}
       <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
            viewBox="0 0 10 6">
@@ -36,7 +36,7 @@ export default defineComponent({
     </button>
 
     <!-- Dropdown menu -->
-    <div id="dropdown" class="z-10 hidden  bg-white divide-y divide-gray-100 rounded-lg shadow w-32 dark:bg-gray-700">
+    <div id="dropdown-user" class="z-10 hidden  bg-white divide-y divide-gray-100 rounded-lg shadow w-32 dark:bg-gray-700">
       <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
         <li>
           <a @click="disconnectUser"

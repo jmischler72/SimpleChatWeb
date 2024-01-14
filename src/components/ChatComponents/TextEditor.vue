@@ -1,12 +1,10 @@
 <script lang="ts">
 import {defineComponent} from 'vue';
 import type {PropType} from 'vue';
-import {push, serverTimestamp, set} from "firebase/database";
-import GifPicker from "@/components/GifPicker/GifPicker.vue";
-import type {ResponseObject} from "@/components/GifPicker/types/ResponseObject";
+import {serverTimestamp} from "firebase/database";
+import GifPicker from "@/components/ChatComponents/GifPicker/GifPicker.vue";
+import type {ResponseObject} from "@/components/ChatComponents/GifPicker/types/ResponseObject";
 import type {ChatUser} from "@/types/ChatUser";
-import {messagesRef} from "@/firebase/init";
-
 
 export default defineComponent({
   name: "TextEditor",
@@ -37,7 +35,7 @@ export default defineComponent({
       if (this.message === "") {
         return;
       }
-      set(push(messagesRef), {
+      this.$emit('messageSent', {
         user: this.user,
         message: this.message,
         timestamp: serverTimestamp(),
@@ -45,7 +43,7 @@ export default defineComponent({
       this.message = "";
     },
     sendGif(gif: ResponseObject) {
-      set(push(messagesRef), {
+      this.$emit('messageSent', {
         user: this.user,
         gif: {
           content_description: gif.content_description,
