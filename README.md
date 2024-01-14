@@ -1,12 +1,33 @@
 # SimpleChatWeb
 
 ## What is it ?
-This application is a simple messaging app using Vue Js and Firebase Realtime database
+This application is a simple messaging app using Vue Js and Firebase
 . 
 
 The two main functionality are : 
-- Choosing a name that will be saved in Local Storage
-- Send messages to the database so everyone on the chat room can see them
+- Connect with a name as guest or with a Google account
+- Send messages to everyone on the chat room
+
+## Packages and tools used
+
+- <strong>Tailwind CSS</strong> - Allow for quicker CSS writing
+- <strong>Flowbite</strong> - Provide useful and reusable components
+- [v0.dev](https://v0.dev/) - AI for HTML/CSS components
+  - Some components were generated and tweaked to make them functional
+
+## Firebase Services
+
+The app uses two services from Firebase :
+
+- <strong>Realtime Database </strong>: To store the messages along with user infos from the poster
+-  <strong>Hosting </strong>: To deploy the website publicly
+
+## Tenor API
+
+In order to show and allow users to send GIFs from the _GifPicker_, this app uses the tenor API
+
+The documentation is available at :
+- https://developers.google.com/tenor/guides/quickstart?hl=fr
 
 ---
 # Vue Readme
