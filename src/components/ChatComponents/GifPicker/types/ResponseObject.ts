@@ -1,4 +1,4 @@
-import type {MediaObject} from "@/components/GifPicker/types/MediaObject";
+import type {MediaObject} from "@/components/ChatComponents/GifPicker/types/MediaObject";
 
 export type ResponseObject = {
     content_description: string,

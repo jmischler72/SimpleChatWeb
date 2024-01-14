@@ -1,8 +1,8 @@
 <script lang="ts">
 
-import type {CategoryObject} from "@/components/GifPicker/types/CategoryObject";
-import type {ResponseObject} from "@/components/GifPicker/types/ResponseObject";
-import {StateEnum} from "@/components/GifPicker/StateEnum";
+import type {CategoryObject} from "@/components/ChatComponents/GifPicker/types/CategoryObject";
+import type {ResponseObject} from "@/components/ChatComponents/GifPicker/types/ResponseObject";
+import {StateEnum} from "@/components/ChatComponents/GifPicker/StateEnum";
 
 const tenorApiUrl = "https://tenor.googleapis.com/v2";
 
@@ -48,9 +48,8 @@ export default {
             this.results = results as ResponseObject[];
             this.state = StateEnum.Loaded;
           })
-          .catch((error) => {
+          .catch(() => {
             this.state = StateEnum.Error;
-            console.log(error)
           })
     },
     getCategoriesGifs() {
@@ -66,9 +65,8 @@ export default {
             this.tags = tags as CategoryObject[];
             this.state = StateEnum.Loaded;
           })
-          .catch((error) => {
+          .catch(() => {
             this.state = StateEnum.Error;
-            console.log(error)
           })
     }
   }
