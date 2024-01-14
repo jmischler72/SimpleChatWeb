@@ -1,13 +1,8 @@
 <script lang="ts">
 import {defineComponent} from 'vue';
 import type {PropType} from 'vue';
-import {limitToLast, onChildAdded, query} from "firebase/database";
 import type {ChatMessage} from "@/types/ChatMessage";
 import type {ChatUser} from "@/types/ChatUser";
-import {messagesRef} from "@/firebase/init";
-
-
-const queryMessages = query(messagesRef, limitToLast(25));
 
 export default defineComponent({
   name: "ChatList",
@@ -16,10 +11,14 @@ export default defineComponent({
       type: Object as PropType<ChatUser>,
       required: true,
     },
+    messages: {
+      type: Object as PropType<ChatMessage[]>,
+      required: true,
+    },
   },
-  data() {
-    return {
-      messages: [] as ChatMessage[],
+  watch: {
+    messages() {
+      this.updateScroll();
     }
   },
   methods: {
@@ -37,12 +36,6 @@ export default defineComponent({
       if (element) element.scrollTop = element.scrollHeight;
     }
   },
-  mounted() {
-    onChildAdded(queryMessages, (data) => {
-      this.messages.push(data.val() as ChatMessage);
-      this.updateScroll();
-    });
-  }
 })
 </script>
 
