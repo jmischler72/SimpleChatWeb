@@ -3,6 +3,7 @@ import {
   GoogleAuthProvider,
   getAuth,
   signInWithRedirect,
+  signInWithPopup
 } from "firebase/auth";
 import {app} from "@/firebase/init";
 
@@ -20,13 +21,17 @@ export default {
   },
   methods: {
     handleLoginWithGoogleRedirect() {
-      signInWithRedirect(auth, provider);
+      if (process.env.NODE_ENV === 'development') {
+        signInWithPopup(auth, provider);
+      } else {
+        signInWithRedirect(auth, provider);
+      }
     },
     handleLoginAsGuest() {
       if (!this.guestUsername) return;
       this.$emit('guestLoggedIn', this.guestUsername);
     }
-  },
+  }
 }
 </script>
 
