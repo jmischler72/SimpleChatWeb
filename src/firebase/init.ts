@@ -1,6 +1,5 @@
 // Import the functions you need from the SDKs you need
 import {initializeApp} from "firebase/app";
-import {getDatabase, ref} from "firebase/database";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -15,7 +14,3 @@ const firebaseConfig = {
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
-
-// Export ref of database
-const db = getDatabase(app);
-export const messagesRef = ref(db, 'v2/messages/');
