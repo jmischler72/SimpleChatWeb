@@ -5,7 +5,7 @@ import {getDatabase, ref} from "firebase/database";
 // Your web app's Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyDwYaAe3u5wB9Oy-Uj8k__Q_yq8RKcd5D4",
-    authDomain: "simplechat-7ea90.firebaseapp.com",
+    authDomain: "chat.joff72.tech",
     databaseURL: "https://simplechat-7ea90-default-rtdb.europe-west1.firebasedatabase.app",
     projectId: "simplechat-7ea90",
     storageBucket: "simplechat-7ea90.appspot.com",
