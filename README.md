@@ -22,16 +22,17 @@ The app uses two services from Firebase :
 - <strong>Realtime Database </strong>: To store the messages along with user infos from the poster
 -  <strong>Hosting </strong>: To deploy the website publicly
 
-## Tenor API
+## GIF and Emoji Picker
 
-In order to show and allow users to send GIFs from the _GifPicker_, this app uses the tenor API
+In order to show and allow users to send GIFs from the _GifPicker_ or emojis with the _EmojiPicker_, this app uses a
+component library I made.
 
-The documentation is available at :
-- https://developers.google.com/tenor/guides/quickstart?hl=fr
+All the informations are available at :
+- https://github.com/jmischler72/vue-gif-emoji-picker
 
 ---
-# Vue Readme
-This template should help get you started developing with Vue 3 in Vite.
+# Getting Started
+If you want to get started with developing on top of this repository
 
 ## Recommended IDE Setup
 
