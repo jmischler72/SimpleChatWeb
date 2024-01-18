@@ -35,7 +35,6 @@ export default {
         guest: false,
         displayName: user.displayName || '',
         userInfo: {
-          email: user.email || '',
           uid: user.uid || '',
           photoURL: user.photoURL || '',
         }

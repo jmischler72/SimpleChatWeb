@@ -5,7 +5,6 @@ export type ChatUser = {
 }
 
 type ChatUserInfo = {
-    email: string;
     photoURL: string;
     uid: string;
 }
