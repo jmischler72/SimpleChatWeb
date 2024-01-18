@@ -1,16 +1,21 @@
 <script lang="ts">
-import {defineComponent} from 'vue';
 import type {PropType} from 'vue';
+import {defineComponent} from 'vue';
 import {push, serverTimestamp, set} from "firebase/database";
-import GifPicker from "@/components/GifPicker/GifPicker.vue";
-import type {ResponseObject} from "@/components/GifPicker/types/ResponseObject";
 import type {ChatUser} from "@/types/ChatUser";
 import {messagesRef} from "@/firebase/init";
-
+import type {Emoji, Gif} from "vue-gif-emoji-picker";
+import {EmojiPicker, GifPicker,} from "vue-gif-emoji-picker";
+import {DropdownEnum} from "@/components/DropdownEnum";
 
 export default defineComponent({
   name: "TextEditor",
-  components: {GifPicker},
+  computed: {
+    DropdownEnum() {
+      return DropdownEnum
+    }
+  },
+  components: {GifPicker, EmojiPicker},
   props: {
     user: {
       type: Object as PropType<ChatUser>,
@@ -20,18 +25,17 @@ export default defineComponent({
   data() {
     return {
       message: '',
-      gifDropdownOpened: false,
+      dropdownOpened: DropdownEnum.None,
       gifDropdownInitiated: false, // is used to render only once and then only use v-show so api is called only once
       tenorAPIKey: import.meta.env.VITE_TENOR_API_KEY,
     }
   },
   methods: {
-    closeGifDropdown() {
-      this.gifDropdownOpened = false;
+    closeDropdown() {
+      this.dropdownOpened = DropdownEnum.None;
     },
-    toggleGifDropdown() {
-      this.gifDropdownInitiated = true;
-      this.gifDropdownOpened = !this.gifDropdownOpened;
+    setDropdown(dropdown: DropdownEnum) {
+      this.dropdownOpened = dropdown;
     },
     sendMessage() {
       if (this.message === "") {
@@ -44,16 +48,16 @@ export default defineComponent({
       });
       this.message = "";
     },
-    sendGif(gif: ResponseObject) {
+    sendGif(gif: Gif) {
       set(push(messagesRef), {
         user: this.user,
-        gif: {
-          content_description: gif.content_description,
-          url: gif.media_formats['gif'].url,
-        },
+        gif: gif,
         timestamp: serverTimestamp(),
       });
-      this.gifDropdownOpened = false;
+      this.dropdownOpened = DropdownEnum.None;
+    },
+    addEmoji(emoji: Emoji) {
+      this.message += emoji.emoji;
     }
   },
 })
@@ -147,12 +151,13 @@ export default defineComponent({
       <!--        </svg>-->
       <!--      </button>-->
       <button
-          @click.stop="toggleGifDropdown"
+          @click.stop="setDropdown(DropdownEnum.Gif); gifDropdownInitiated = true"
           class="editor-button">
-        <span class="sr-only">Image</span>
+        <span class="sr-only">GIF</span>
         <span class="material-symbols-outlined md-36">gif</span>
       </button>
       <button
+          @click.stop="setDropdown(DropdownEnum.Emoji)"
           class="editor-button !px-4">
         <span class="sr-only">Emoji</span>
         <span class="material-symbols-outlined md-18">mood</span>
@@ -169,13 +174,15 @@ export default defineComponent({
           class="w-full h-full p-6 py-8 text-gray-600 dark:text-gray-200 dark:bg-gray-700 text-md resize-none outline-none overflow-y-auto"
           placeholder="Type your text here..." maxlength="250" v-model="message"/>
     </div>
-    <div v-if="gifDropdownInitiated" v-show="gifDropdownOpened" class="translate-y-[-100%] absolute top-0 shadow-2xl">
-      <div v-click-outside="closeGifDropdown">
-        <GifPicker :api-key="tenorAPIKey" @gifSent="sendGif">
+    <div v-show="dropdownOpened !== DropdownEnum.None" class="translate-y-[-100%] absolute top-0 shadow-2xl">
+      <div v-click-outside="closeDropdown">
+        <GifPicker v-if="gifDropdownInitiated && dropdownOpened === DropdownEnum.Gif" :api-key="tenorAPIKey"
+                   @gifSent="sendGif">
         </GifPicker>
+        <EmojiPicker v-else @emojiSent="addEmoji">
+        </EmojiPicker>
       </div>
     </div>
-
   </div>
 </template>
 

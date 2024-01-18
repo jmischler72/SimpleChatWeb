@@ -50,21 +50,21 @@ export default defineComponent({
   <div id="container"
        class="w-full max-w-[90rem] h-[70vh] mx-auto bg-white dark:bg-gray-800 shadow rounded-lg overflow-y-auto overflow-x-hidden">
     <div class="sm:px-2 px-1 divide-y divide-gray-300 dark:divide-gray-700">
-      <div v-for="message of messages">
+      <div v-for="(message, m) of messages" :key="m">
         <div class="flex items-center space-x-4 rounded-lg sm:m-2 mx-0 my-2"
              :class="{ [`bg-[--medium-color2] dark:bg-gray-700`]: isMessageFromCurrentUser(message)}">
           <div
-              class="flex flex-row items-center h-full justify-between w-[260px] min-w-[160px] border-r border-gray-300 dark:border-gray-700 p-4 px-8 dark:text-gray-200"
+              class="flex flex-row items-center h-full justify-between sm:w-[260px] min-w-[120px] border-r border-gray-300 dark:border-gray-700 p-4 sm:px-8 dark:text-gray-200"
               :class="{ [`dark:border-gray-800`]: isMessageFromCurrentUser(message) }">
             <span v-if="message.user.guest" class="text-gray-400 italic text-base">Guest</span>
-            <div v-else>
+            <div v-else class="pr-1">
               <img v-if="message.user.userInfo?.photoURL" class="w-6 h-6 me-2 rounded-full"
                    :src="message.user.userInfo?.photoURL" alt="user photo">
               <span v-else class="material-symbols-outlined md-24 me-2 justify-center flex">account_circle</span>
             </div>
             <h3 class="text-xs sm:text-base font-semibold truncate">{{ message.user.displayName }}</h3>
           </div>
-          <div class="w-full flex flex-row items-center justify-between float-left p-4">
+          <div class="w-full flex flex-row items-center justify-between float-left p-0 sm:p-4">
 
             <img
                 v-if="message.gif"
@@ -74,8 +74,7 @@ export default defineComponent({
                 data-state="closed"
                 @load="updateScroll"
             />
-
-            <p v-else-if="message.message" class="sm:text-md text-sm text-gray-800 dark:text-gray-200 p-4">{{
+            <p v-else-if="message.message" class="text-sm sm:!text-base  text-gray-800 dark:text-gray-200 p-4">{{
                 message.message
               }}</p>
             <span class="sm:text-sm text-xs text-gray-500 dark:text-gray-400 ml-2">{{
